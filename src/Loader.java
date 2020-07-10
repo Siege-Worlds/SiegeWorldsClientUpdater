@@ -6,6 +6,10 @@ import java.util.zip.ZipInputStream;
 
 import javax.swing.*;
 
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
+
 public class Loader extends JFrame {
 
 	private static final long serialVersionUID = -6236121847194890547L;
@@ -14,8 +18,8 @@ public class Loader extends JFrame {
 	 * Needed variables
 	 */
 
-	public static final String GAME_CLIENT = "http://www.gamesinteractive.co.uk/SW/client.zip";
-	public static final String ZIP_FILE = System.getProperty("user.home") + "/SW/SWClient.zip";
+	public static final String GAME_CLIENT = "http://www.gamesinteractive.co.uk/SW/client.tar.gz";
+	public static final String ZIP_FILE = System.getProperty("user.home") + "/SW/SWClient.tar.gz";
 
 	public static final String VERSION_URL = "http://www.gamesinteractive.co.uk/SW/version.txt";
 	public static final String VERSION_FILE = System.getProperty("user.home") + "/SW/version.txt";
@@ -88,7 +92,7 @@ public class Loader extends JFrame {
 			}
 		}
 		
-		unZip(new File(ZIP_FILE));
+		extractTarGZ(new FileInputStream(new File(ZIP_FILE)));
 		
 		try {
 			Runtime.getRuntime().exec(GAME_EXE);
@@ -197,41 +201,35 @@ public class Loader extends JFrame {
 		}
 	}
 	
-	private void unZip(File clientZip) {
-		try {
-			label.setText("un-zipping game files.");
-			repaint();
-			unZipFile(clientZip,new File(GAME_DIRECTORY));
-			clientZip.delete();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void extractTarGZ(InputStream in) throws IOException {
+	    GzipCompressorInputStream gzipIn = new GzipCompressorInputStream(in);
+	    try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
+	        TarArchiveEntry entry;
+
+	        while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
+	            /** If the entry is a directory, create the directory. **/
+	            if (entry.isDirectory()) {
+	                File f = new File(entry.getName());
+	                boolean created = f.mkdir();
+	                if (!created) {
+	                    System.out.printf("Unable to create directory '%s', during extraction of archive contents.\n",
+	                            f.getAbsolutePath());
+	                }
+	            } else {
+	                int count;
+	                byte data[] = new byte[1024];
+	                FileOutputStream fos = new FileOutputStream(entry.getName(), false);
+	                try (BufferedOutputStream dest = new BufferedOutputStream(fos, 1024)) {
+	                    while ((count = tarIn.read(data, 0, 1024)) != -1) {
+	                        dest.write(data, 0, count);
+	                    }
+	                }
+	            }
+	        }
+
+	        System.out.println("Untar completed successfully!");
+	    }
 	}
 	
-	private void unZipFile(File zipFile,File outFile) throws IOException{
-		ZipInputStream zin = new ZipInputStream(new BufferedInputStream(new FileInputStream(zipFile)));
-		ZipEntry e;
-		long max = 0;
-		long curr = 0;
-		while((e = zin.getNextEntry()) != null)
-			max += e.getSize();
-		zin.close();
-		ZipInputStream in = new ZipInputStream(new BufferedInputStream(new FileInputStream(zipFile)));
-		while((e = in.getNextEntry()) != null){
-			if(e.isDirectory())
-				new File(outFile,e.getName()).mkdirs();
-			else{
-				FileOutputStream out = new FileOutputStream(new File(outFile,e.getName()));
-				byte[] b = new byte[1024];
-				int len;
-				while((len = in.read(b,0,b.length)) > -1){
-					curr += len;
-						out.write(b, 0, len);
-						//int complete = (int)((curr * 100) / max));
-				}
-				out.flush();
-				out.close();
-			}
-		}
-	}
+	
 }
