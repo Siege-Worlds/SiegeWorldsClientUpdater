@@ -72,10 +72,10 @@ public class Loader extends JFrame {
 		int currentVersion = getCurrentVersion();
 		System.out.println("Current version installed: " + currentVersion);
 		System.out.println("Newest version: " + newest);
+		
 		if (!file.exists()) {
 			download();
-		}
-		if (newest > this.getCurrentVersion()) {
+		} else if (newest > this.getCurrentVersion()) {
 			OutputStream out;
 			try {
 				out = new FileOutputStream(VERSION_FILE);
