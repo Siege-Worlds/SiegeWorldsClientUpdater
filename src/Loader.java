@@ -18,15 +18,26 @@ public class Loader extends JFrame {
 	 * Needed variables
 	 */
 
-	public static final String GAME_CLIENT = "http://www.gamesinteractive.co.uk/SW/client.tar.gz";
-	public static final String ZIP_FILE = System.getProperty("user.home") + "/SW/client.tar.gz";
+	public static final String GAME_CLIENT = "https://www.gamesinteractive.co.uk/SW/sw_windows_client.tar.gz";
+	public static final String ZIP_FILE = System.getProperty("user.home") + "/.siegeworlds/client.tar.gz";
 
-	public static final String VERSION_URL = "http://www.gamesinteractive.co.uk/SW/version.txt";
-	public static final String VERSION_FILE = System.getProperty("user.home") + "/SW/version.txt";
+	public static final String VERSION_URL = "https://www.gamesinteractive.co.uk/SW/version.txt";
+	public static final String VERSION_FILE = System.getProperty("user.home") + "/.siegeworlds/version.txt";
 	
-	public static final String GAME_DIRECTORY = System.getProperty("user.home") + "/SW/";
-	public static final String GAME_EXE = System.getProperty("user.home") + "/SW/SWClient.exe";
+	public static final String GAME_DIRECTORY = System.getProperty("user.home") + "/.siegeworlds/";
+	public static final String GAME_EXE = System.getProperty("user.home") + "/.siegeworlds/SWClient.exe";
 
+	void sendUserAgentHeader() {
+		 try {
+		 URL url = new URL("https://www.gamesinteractive.co.uk");
+	        URLConnection hc = url.openConnection();
+	        hc.setRequestProperty("User-Agent", System.getProperty("http.agent"));
+		 } catch (Exception e) {
+			 e.printStackTrace();
+		 }
+
+	}
+	
 	/**
 	 * Methods
 	 */
@@ -42,8 +53,7 @@ public class Loader extends JFrame {
 
 	public int getCurrentVersion() {
 		try {
-			return Integer
-					.parseInt(new BufferedReader(new InputStreamReader(new FileInputStream(VERSION_FILE))).readLine());
+			return Integer.parseInt(new BufferedReader(new InputStreamReader(new FileInputStream(VERSION_FILE))).readLine());
 		} catch (Exception e) {
 			return 0;
 		}
@@ -55,6 +65,7 @@ public class Loader extends JFrame {
 			BufferedReader br = new BufferedReader(new InputStreamReader(tmp.openStream()));
 			return Integer.parseInt(br.readLine());
 		} catch (Exception e) {
+			e.printStackTrace();
 			return -1;
 		}
 	}
@@ -71,6 +82,7 @@ public class Loader extends JFrame {
 	}
 
 	public void update() throws IOException {
+		sendUserAgentHeader();
 		File file = new File(ZIP_FILE);
 		int newest = getNewestVersion();
 		int currentVersion = getCurrentVersion();
@@ -80,7 +92,7 @@ public class Loader extends JFrame {
 		if (!file.exists()) {
 			download();
 			downloaded = true;
-		} else if (newest > this.getCurrentVersion()) {
+		} else if (newest > this.getCurrentVersion() || currentVersion == -1) {
 			OutputStream out;
 			try {
 				out = new FileOutputStream(VERSION_FILE);
