@@ -18,14 +18,19 @@ public class Loader extends JFrame {
 	 * Needed variables
 	 */
 
-	public static final String GAME_CLIENT = "http://www.gamesinteractive.co.uk/SW/client.tar.gz";
-	public static final String ZIP_FILE = System.getProperty("user.home") + "/SW/client.tar.gz";
+	public static final String GAME_CLIENT = "http://77.68.78.218/SW/sw_windows_client.tar.gz";
+	public static final String ZIP_FILE = System.getProperty("user.home") + "/SW/sw_windows_client.tar.gz";
 
-	public static final String VERSION_URL = "http://www.gamesinteractive.co.uk/SW/version.txt";
+	public static final String VERSION_URL = "http://77.68.78.218/SW/version.txt";
 	public static final String VERSION_FILE = System.getProperty("user.home") + "/SW/version.txt";
 	
 	public static final String GAME_DIRECTORY = System.getProperty("user.home") + "/SW/";
 	public static final String GAME_EXE = System.getProperty("user.home") + "/SW/SWClient.exe";
+	
+	/**
+	 * Detect errors
+	 */
+	public boolean error = false;
 
 	/**
 	 * Methods
@@ -55,6 +60,7 @@ public class Loader extends JFrame {
 			BufferedReader br = new BufferedReader(new InputStreamReader(tmp.openStream()));
 			return Integer.parseInt(br.readLine());
 		} catch (Exception e) {
+			error = true;
 			return -1;
 		}
 	}
@@ -64,8 +70,10 @@ public class Loader extends JFrame {
 			clearDirectory(new File(GAME_DIRECTORY));
 			saveUrl(ZIP_FILE, GAME_CLIENT);
 		} catch (MalformedURLException e1) {
+			error = true;
 			e1.printStackTrace();
 		} catch (IOException e1) {
+			error = true;
 			e1.printStackTrace();
 		}
 	}
@@ -89,12 +97,28 @@ public class Loader extends JFrame {
 				download();
 				downloaded = true;
 			} catch (FileNotFoundException e) {
+				error = true;
 				e.printStackTrace();
 			} catch (IOException e2) {
+				e2.printStackTrace();
+				error = true;
 			}
 		}
 		if (downloaded)
 			extractTarGZ(new FileInputStream(new File(ZIP_FILE)));
+		
+		if (error) {
+			label.setText("Error: Please re-download game launcher.");
+			repaint();
+			while (true) {
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 		
 		try {
 			Runtime.getRuntime().exec(GAME_EXE);
@@ -195,7 +219,11 @@ public class Loader extends JFrame {
 				label.setText("Siege worlds is downloading. "+pc+"%");
 				repaint();
 			}
-		} finally {
+		} catch (Exception e) {
+			e.printStackTrace();
+			error = true;
+		}
+		finally {
 			if (in != null)
 				in.close();
 			if (out != null)
@@ -232,6 +260,9 @@ public class Loader extends JFrame {
 	        }
 
 	        System.out.println("Untar completed successfully!");
+	    } catch (Exception e) {
+	    	error = true;
+	    	e.printStackTrace();
 	    }
 	}
 	
