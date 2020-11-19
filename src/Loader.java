@@ -19,13 +19,13 @@ public class Loader extends JFrame {
 	 */
 
 	public static final String GAME_CLIENT = "http://77.68.78.218/SW/sw_windows_client.tar.gz";
-	public static final String ZIP_FILE = System.getProperty("user.home") + "/SW/sw_windows_client.tar.gz";
+	public static final String ZIP_FILE = System.getProperty("user.home") + "/.siegeworlds/sw_windows_client.tar.gz";
 
 	public static final String VERSION_URL = "http://77.68.78.218/SW/version.txt";
-	public static final String VERSION_FILE = System.getProperty("user.home") + "/SW/version.txt";
+	public static final String VERSION_FILE = System.getProperty("user.home") + "/.siegeworlds/version.txt";
 	
 	public static final String GAME_DIRECTORY = System.getProperty("user.home") + "/SW/";
-	public static final String GAME_EXE = System.getProperty("user.home") + "/SW/SWClient.exe";
+	public static final String GAME_EXE = System.getProperty("user.home") + "/.siegeworlds/SWClient.exe";
 	
 	/**
 	 * Detect errors
@@ -104,21 +104,11 @@ public class Loader extends JFrame {
 				error = true;
 			}
 		}
-		if (downloaded)
+		if (downloaded) {
 			extractTarGZ(new FileInputStream(new File(ZIP_FILE)));
-		
-		if (error) {
-			label.setText("Error: Please re-download game launcher.");
-			repaint();
-			while (true) {
-				try {
-					Thread.sleep(50);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
 		}
+		
+		
 		
 		try {
 			Runtime.getRuntime().exec(GAME_EXE);
@@ -181,6 +171,20 @@ public class Loader extends JFrame {
 		} catch (IOException e2) {
 			e2.printStackTrace();
 		}
+		
+		if (error) {
+			label.setText("Error: Try re-downloading game launcher.");
+			repaint();
+			while (true) {
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
 		dispose();
 	}
 
