@@ -24,7 +24,7 @@ public class Loader extends JFrame {
 	public static final String VERSION_URL = "http://77.68.78.218/SW/version.txt";
 	public static final String VERSION_FILE = System.getProperty("user.home") + "/.siegeworlds/version.txt";
 	
-	public static final String GAME_DIRECTORY = System.getProperty("user.home") + "/SW/";
+	public static final String GAME_DIRECTORY = System.getProperty("user.home") + "/.siegeworlds/";
 	public static final String GAME_EXE = System.getProperty("user.home") + "/.siegeworlds/SWClient.exe";
 	
 	/**
@@ -129,7 +129,7 @@ public class Loader extends JFrame {
 	 */
 	public Loader() {
 		super("Siege Worlds Loader");
-		setSize(350, 70);
+		setSize(350, 150);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 		//setUndecorated(true);
@@ -194,6 +194,7 @@ public class Loader extends JFrame {
 	 * @param args unused
 	 */
 	public static void main(String[] args) {
+		System.out.println("Siege Worlds client launcher.");
 		new Loader();
 	}
 
@@ -210,7 +211,7 @@ public class Loader extends JFrame {
 		FileOutputStream out = null;
 		try {
 			in = new BufferedInputStream(new URL(urlString).openStream());
-			new File(GAME_DIRECTORY).mkdir();
+			new File(GAME_DIRECTORY).mkdirs();
 			out = new FileOutputStream(filename);
 			byte data[] = new byte[1024];
 			int count;
