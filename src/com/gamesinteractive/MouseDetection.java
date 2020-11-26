@@ -28,7 +28,7 @@ public class MouseDetection implements MouseListener {
 	}
 
 	public void mousePressed(MouseEvent click) {
-			
+			GFrame.getInstance().initialClick = click.getPoint();
 	}
 
 	public void mouseReleased(MouseEvent click) {

@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 
 public class SplashScreen {
 	
-	public static final int DELAY_TIME = 200;
+	public static final int DELAY_TIME = 1200;
 	public static long startTime;
 	
 	public static void init() {

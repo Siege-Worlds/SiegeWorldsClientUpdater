@@ -2,6 +2,7 @@ package com.gamesinteractive;
 
 
 import java.awt.Canvas;
+import java.awt.Point;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
@@ -12,6 +13,7 @@ import javax.swing.JPanel;
 
 public class GFrame extends Canvas {
 	
+	public Point initialClick;
 	public JFrame container;
 
 	/**
@@ -31,6 +33,8 @@ public class GFrame extends Canvas {
 		container.setResizable(false);
 		container.setVisible(true);
 		container.setLocationRelativeTo(null);
+		
+		//MotionPanel mp = new MotionPanel(container);
 		
 		/**
 		 * Event for closing window if requested
