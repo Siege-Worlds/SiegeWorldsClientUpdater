@@ -66,6 +66,10 @@ public class SiegeWorlds {
 		progressbg = new Sprite("progressbg.png");
 		updatingButton = new Sprite("updating.png");
 		
+		facebook = new Sprite("facebook.png");
+		twitter = new Sprite("twitter.png");
+		youtube = new Sprite("youtube.png");
+		
 		clientVersion = getCurrentVersion();
 		newestVersion = getNewestVersion();
 		lastVersionCheck = System.currentTimeMillis();
@@ -100,6 +104,13 @@ public class SiegeWorlds {
 		g.drawString("Latest Client version: " + newestVersion, 230, 725);
 		g.drawString("Game Directory: " + GAME_DIRECTORY, 230, 740);
 		progressbg.draw(g, 385, 652);
+		
+		int x = 1024;
+		facebook.draw(g, x, 43);
+		x+= 53;
+		twitter.draw(g, x, 43);
+		x+=53;
+		youtube.draw(g, x, 43);
 		
 		if (updateRequired) {
 			updateButton.draw(g, 926, 640);
@@ -162,6 +173,10 @@ public class SiegeWorlds {
 	Sprite updatingButton;
 	Sprite progressBar;
 	Sprite progressbg;
+	
+	Sprite facebook;
+	Sprite twitter;
+	Sprite youtube;
 	
 	FileDownloader downloader;
 	
