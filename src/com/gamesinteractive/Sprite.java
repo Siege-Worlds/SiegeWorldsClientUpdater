@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.ZipEntry;
@@ -54,11 +55,13 @@ public class Sprite {
 		try {
 		this.width = width;
 		this.height = height;
-		//ZipFile zipFile = new ZipFile(Constants.cacheDir + "Cache.dat");
+		//File f = new File(this.getClass().getResource("c.dat").toURI());
+		//ZipFile zipFile = new ZipFile(f);
 		//ZipEntry zipEntry = zipFile.getEntry(image);
 		//InputStream entryStream = zipFile.getInputStream(zipEntry);
 	    //this.image = ImageIO.read(entryStream);
-		this.image = new ImageIcon(Constants.cacheDir + image).getImage();
+		//this.image = new ImageIcon(Constants.cacheDir + image).getImage();
+		this.image = new ImageIcon(GFrame.class.getResource("/c/"+image)).getImage();
 		} catch (Exception e) {
 
 			new Exception("Error loading Sprite").printStackTrace();
@@ -71,11 +74,13 @@ public class Sprite {
 	 */
 	public Sprite(String image) {
 		try {
-		//ZipFile zipFile = new ZipFile(Constants.cacheDir + "Cache.dat");
+		//	File f = new File(this.getClass().getResource("c.dat").toURI());
+		//	ZipFile zipFile = new ZipFile(f);
 		//ZipEntry zipEntry = zipFile.getEntry(image);
 		//InputStream entryStream = zipFile.getInputStream(zipEntry);
 	    //this.image = ImageIO.read(entryStream);
-		this.image = new ImageIcon(Constants.cacheDir + image).getImage();
+		//this.image = new ImageIcon(Constants.cacheDir + image).getImage();
+		this.image = new ImageIcon(GFrame.class.getResource("/c/"+image)).getImage();
 		width = this.image.getWidth(null);
 		height = this.image.getHeight(null);
 		} catch (Exception e) {
