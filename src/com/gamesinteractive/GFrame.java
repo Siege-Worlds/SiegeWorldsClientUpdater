@@ -76,7 +76,7 @@ public class GFrame extends Canvas {
 	 * Entry point to the program
 	 */
 	public static void main(String args[]) {
-		new Console(true);
+		//new Console(true);
 		frame = new GFrame();
 		Client.gameIsRunning = true;
 		/**

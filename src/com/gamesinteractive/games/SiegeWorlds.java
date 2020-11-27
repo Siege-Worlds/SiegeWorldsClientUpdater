@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 import com.gamesinteractive.FileDownloader;
+import com.gamesinteractive.Misc;
 import com.gamesinteractive.Sprite;
 
 public class SiegeWorlds {
@@ -65,10 +66,17 @@ public class SiegeWorlds {
 		progressBar = new Sprite("progress.png");
 		progressbg = new Sprite("progressbg.png");
 		updatingButton = new Sprite("updating.png");
+		shine = new Sprite("shine.png");
+		website = new Sprite("website.png");
+		websiteh = new Sprite("websiteh.png");
 		
-		facebook = new Sprite("facebook.png");
+		facebook = new Sprite("facebook2.png");
 		twitter = new Sprite("twitter.png");
 		youtube = new Sprite("youtube.png");
+		
+		facebookH = new Sprite("facebook2h.png");
+		twitterH = new Sprite("twitterh.png");
+		youtubeH = new Sprite("youtubeh.png");
 		
 		clientVersion = getCurrentVersion();
 		newestVersion = getNewestVersion();
@@ -105,12 +113,26 @@ public class SiegeWorlds {
 		g.drawString("Game Directory: " + GAME_DIRECTORY, 230, 740);
 		progressbg.draw(g, 385, 652);
 		
+		website.draw(g, 985, 716);
+		if (website.hover()) {
+			websiteh.draw(g, 985-5, 716-5);
+		}
+		
 		int x = 1024;
 		facebook.draw(g, x, 43);
+		if (facebook.hover()) {
+			facebookH.draw(g,x,43);
+		}
 		x+= 53;
 		twitter.draw(g, x, 43);
+		if (twitter.hover()) {
+			twitterH.draw(g,x,43);
+		}
 		x+=53;
 		youtube.draw(g, x, 43);
+		if (youtube.hover()) {
+			youtubeH.draw(g,x,43);
+		}
 		
 		if (updateRequired) {
 			updateButton.draw(g, 926, 640);
@@ -122,6 +144,17 @@ public class SiegeWorlds {
 			}
 			float width = (500 / 100 ) * downloader.percent;
 			progressBar.drawClipped(g, 386, 653, (int)width, 35);//(g, 386, 653);
+			
+			
+			//draw progress bar shine
+			g.clipRect(386, 653, (int)width, 35);
+			shineX += 20;
+			shine.draw(g, shineX, 660);
+			if (shineX > 2500)
+				shineX = 0;
+			g.setClip(0, 0, 1200, 750);
+			
+			
 			g.setFont(new Font("Arial", Font.PLAIN, 12));
 			g.setColor(Color.white);
 			g.drawString(downloader.message, 394, 675);
@@ -132,6 +165,7 @@ public class SiegeWorlds {
 				playButtonH.draw(g, 926, 640);
 			}
 			progressBar.draw(g, 386, 653);
+		
 			g.setFont(new Font("Arial", Font.PLAIN, 12));
 			g.setColor(Color.white);
 			g.drawString("Update Complete!", 394, 675);
@@ -155,6 +189,18 @@ public class SiegeWorlds {
 				downloading = true;
 			}
 		}
+		if (website.hover()) {
+			Misc.launchURL("www.siegeworlds.com/");
+		}
+		if (facebook.hover()) {
+			Misc.launchURL("www.facebook.com/Siege-Worlds-110346624000517/about/?ref=page_internal");
+		}
+		if (twitter.hover()) {
+			Misc.launchURL("www.twitter.com/siege_worlds");
+		}
+		if (youtube.hover()) {
+			Misc.launchURL("www.youtube.com/channel/UCS_czm1uJ5j79b9KzZtgViw");
+		}
 	}
 	
 	boolean updateRequired;
@@ -165,6 +211,8 @@ public class SiegeWorlds {
 	int clientVersion;
 	int newestVersion;
 	
+	int shineX = 0;
+	
 	//play / update butons with hover
 	Sprite playButton;
 	Sprite playButtonH;
@@ -173,10 +221,13 @@ public class SiegeWorlds {
 	Sprite updatingButton;
 	Sprite progressBar;
 	Sprite progressbg;
+	Sprite shine;
+	Sprite website;
+	Sprite websiteh;
 	
-	Sprite facebook;
-	Sprite twitter;
-	Sprite youtube;
+	Sprite facebook, facebookH;
+	Sprite twitter, twitterH;
+	Sprite youtube, youtubeH;
 	
 	FileDownloader downloader;
 	

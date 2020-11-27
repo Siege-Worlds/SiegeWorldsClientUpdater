@@ -28,6 +28,9 @@ public class MainMenu {
 		theBurningRealm = new TheBurningRealm();
 		siegeWorlds.init();
 		theBurningRealm.init();
+		if (!System.getProperty("os.name").toLowerCase().contains("windows")) {
+			osWarning = true;
+		}
 	}
 
 	public static void update() {
@@ -65,6 +68,13 @@ public class MainMenu {
 		g.setFont(new Font("Arial", Font.PLAIN, 14));
 		g.setColor(Color.white);
 		g.drawString("The Burning Realm", 52, 192);
+		
+		
+		if (osWarning) {
+			g.setFont(new Font("Arial", Font.PLAIN, 10));
+			g.setColor(Color.red);
+			g.drawString("Warning: Your operating system is not yet supported by this launcher.", 226, 79);
+		}
 
 		if (selectedGame == 0) {
 			siegeWorlds.draw(g);
@@ -114,5 +124,7 @@ public class MainMenu {
 
 	static SiegeWorlds siegeWorlds;
 	static TheBurningRealm theBurningRealm;
+	
+	static boolean  osWarning = false;
 
 }
