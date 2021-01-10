@@ -69,6 +69,10 @@ public class SiegeWorlds {
 		shine = new Sprite("shine.png");
 		website = new Sprite("website.png");
 		websiteh = new Sprite("websiteh.png");
+		telegram = new Sprite("telegram.png");
+		telegramH = new Sprite("telegramh.png");
+		discord = new Sprite("discord.png");
+		discordH = new Sprite("discordH.png");
 		
 		facebook = new Sprite("facebook2.png");
 		twitter = new Sprite("twitter.png");
@@ -118,7 +122,7 @@ public class SiegeWorlds {
 			websiteh.draw(g, 985-5, 716-5);
 		}
 		
-		int x = 1024;
+		int x = 1024-106;
 		facebook.draw(g, x, 43);
 		if (facebook.hover()) {
 			facebookH.draw(g,x,43);
@@ -132,6 +136,16 @@ public class SiegeWorlds {
 		youtube.draw(g, x, 43);
 		if (youtube.hover()) {
 			youtubeH.draw(g,x,43);
+		}
+		x+=53;
+		telegram.draw(g, x, 43);
+		if (telegram.hover()) {
+			telegramH.draw(g,x,43);
+		}
+		x+=53;
+		discord.draw(g, x, 43);
+		if (discord.hover()) {
+			discordH.draw(g,x,43);
 		}
 		
 		if (updateRequired) {
@@ -201,6 +215,12 @@ public class SiegeWorlds {
 		if (youtube.hover()) {
 			Misc.launchURL("www.youtube.com/channel/UCS_czm1uJ5j79b9KzZtgViw");
 		}
+		if (telegram.hover()) {
+			Misc.launchURL("www.t.me/siegeworlds");
+		}
+		if (discord.hover()) {
+			Misc.launchURL("www.discord.gg/MaEqM6jYEX");
+		}
 	}
 	
 	boolean updateRequired;
@@ -228,6 +248,8 @@ public class SiegeWorlds {
 	Sprite facebook, facebookH;
 	Sprite twitter, twitterH;
 	Sprite youtube, youtubeH;
+	Sprite telegram, telegramH;
+	Sprite discord, discordH;
 	
 	FileDownloader downloader;
 	
