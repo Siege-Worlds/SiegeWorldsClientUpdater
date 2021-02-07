@@ -15,6 +15,7 @@ import java.net.URL;
 import com.gamesinteractive.FileDownloader;
 import com.gamesinteractive.Misc;
 import com.gamesinteractive.Sprite;
+import com.gamesinteractive.WebRequest;
 
 public class SiegeWorlds {
 
@@ -91,6 +92,13 @@ public class SiegeWorlds {
 		downloading = false;
 		
 		downloader = new FileDownloader(ZIP_FILE, GAME_CLIENT, GAME_DIRECTORY);
+		
+		try {
+			WebRequest.sendGET("http://104.254.246.90:3000/usrcount");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void update() {
